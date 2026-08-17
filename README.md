@@ -7,7 +7,7 @@ The technologies used in this project shall include HTML, CSS, JavaScript and SQ
 This website is focused on a restaurant based in Yaoundé and oeprations that can be carried out on this website include menu viewing, table reservation, deliveries and event catering.
 Languages used in the creation of this website shall include HTML, CSS and JavaScript.
 
-CASE STUDY: A restaurant in Yaoundé needs an online system that connects customers to delivery agents. 
+CASE STUDY: An independent restaurant in Yaoundé needs an online system that connects customers to employees for reservations, delivery and catering services. 
 Restaurant employees and customers shall all use this platform.
 
 The system must handle:
@@ -22,13 +22,13 @@ The system must handle:
 - The users of the catering system shall be customers and caterers.
 - The users of the reservation system shall be customers and waiters.
 
-##Objectives
-###General Objective
+## Objectives
+### General Objective
 The main objective of this project is to design and implement a user-friendly, web-based management system for a restaurant in Yaoundé
 
-###Specific Objective
+### Specific Objectives
 
-##FRONT-END
+## FRONT-END
 The website shall have the following webpages:
 1. Home
 2. Menu
