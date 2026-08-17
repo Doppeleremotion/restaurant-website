@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make a Reservation - Camus Restau</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="site-shell">
+    <div class="paper-panel">
+      <header class="site-header">
+        <a href="index.html" class="brand" aria-label="Camus Restau home">
+          <span class="brand-mark">F</span>
+          <span>Camus</span>
+        </a>
+        <button class="mobile-menu" id="menuButton" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <nav class="main-nav" id="mainNav" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="reservations.html" class="active">Reservations</a>
+          <a href="#deliveries">Deliveries</a>
+          <a href="#catering">Catering</a>
+          <a href="#about">About us</a>
+          <a href="#contact">Contact us</a>
+        </nav>
+        <div class="header-actions">
+          <button aria-label="Search">⌕</button>
+          <button aria-label="Shopping bag">▢</button>
+          <button aria-label="Wishlist">♡</button>
+          <button class="login-button">Log In</button>
+        </div>
+      </header>
+
+      <section class="reservation-hero">
+        <h1>Reserve Your Table</h1>
+        <p>Join us for an unforgettable dining experience at Camus Restau</p>
+      </section>
+
+      <section class="reservation-container">
+        <form id="reservationForm" class="reservation-form">
+          <!-- Name Field -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" name="lastName" required>
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+          </div>
+
+          <!-- Reservation Details -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Date *</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+              <label for="time">Time *</label>
+              <input type="time" id="time" name="time" required>
+            </div>
+          </div>
+
+          <!-- Party Size -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="guests">Number of Guests *</label>
+              <select id="guests" name="guests" required>
+                <option value="">Select number of guests</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+                <option value="6">6 Guests</option>
+                <option value="7">7 Guests</option>
+                <option value="8">8 Guests</option>
+                <option value="9">9 Guests</option>
+                <option value="10">10+ Guests</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="seating">Seating Preference</label>
+              <select id="seating" name="seating">
+                <option value="">No preference</option>
+                <option value="window">Window seat</option>
+                <option value="corner">Corner table</option>
+                <option value="center">Center dining</option>
+                <option value="private">Private area</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Special Occasions -->
+          <div class="form-group">
+            <label for="occasion">Special Occasion</label>
+            <select id="occasion" name="occasion">
+              <option value="">No special occasion</option>
+              <option value="birthday">Birthday</option>
+              <option value="anniversary">Anniversary</option>
+              <option value="engagement">Engagement</option>
+              <option value="business">Business Dinner</option>
+              <option value="celebration">Celebration</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Dietary Requirements -->
+          <div class="form-group">
+            <label for="dietary">Dietary Restrictions & Allergies</label>
+            <textarea id="dietary" name="dietary" rows="4" placeholder="Please let us know of any dietary requirements or allergies"></textarea>
+          </div>
+
+          <!-- Additional Notes -->
+          <div class="form-group">
+            <label for="notes">Special Requests or Notes</label>
+            <textarea id="notes" name="notes" rows="4" placeholder="Any additional information you'd like us to know?"></textarea>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="terms" name="terms" required style="width: auto; margin-top: 4px;">
+            <label for="terms" style="margin-bottom: 0;">I agree to the reservation terms and conditions *</label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="submit-button">Complete Reservation</button>
+
+          <!-- Info Box -->
+          <div class="info-box">
+            <h3>📞 Need Help?</h3>
+            <p>
+              For party sizes larger than 10 guests or group reservations, please call us directly at 
+              <strong>(123) 456-7890</strong> or email <strong>reservations@camusrestau.com</strong>
+            </p>
+            <p>
+              We're open 11:00 AM - 11:00 PM daily. Cancellations must be made 24 hours in advance.
+            </p>
+          </div>
+        </form>
+      </section>
+
+      <section style="padding: 60px 4%; background: #f5f1e8;">
+        <div style="max-width: 1000px; margin: 0 auto;">
+          <h2 style="font-size: 32px; color: #886522; margin-bottom: 30px; text-align: center;">Why Dine With Us?</h2>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="feature-card">
+              <span>🍽️</span>
+              <h3 style="font-size: 18px; color: #333; margin-bottom: 10px;">Exceptional Cuisine</h3>
+              <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                Our chef crafts each dish with premium ingredients and creative techniques.
+              </p>
+            </div>
+            
+            <div class="feature-card">
+              <span>👥</span>
+              <h3 style="font-size: 18px; color: #333; margin-bottom: 10px;">Expert Service</h3>
+              <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                Our attentive staff ensures every detail of your visit is perfect.
+              </p>
+            </div>
+            
+            <div class="feature-card">
+              <span>✨</span>
+              <h3 style="font-size: 18px; color: #333; margin-bottom: 10px;">Ambiance</h3>
+              <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                Experience our warm, elegant dining environment perfect for any occasion.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>About</h3>
+            <a href="#about">Our Story</a>
+            <a href="#team">Our Team</a>
+            <a href="#values">Values</a>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="menu.html">Menu</a>
+            <a href="reservations.html">Reservations</a>
+            <a href="#catering">Catering</a>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <a href="tel:+1234567890">(123) 456-7890</a>
+            <a href="mailto:info@camusrestau.com">info@camusrestau.com</a>
+            <a href="#location">Location</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Camus Restau. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>
