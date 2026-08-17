@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camus Restau</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="site-shell">
+    <div class="paper-panel">
+      <header class="site-header">
+        <a href="#top" class="brand" aria-label="Foodie home">
+          <span class="brand-mark">F</span>
+          <span>Camus</span>
+        </a>
+        <button class="mobile-menu" id="menuButton" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <nav class="main-nav" id="mainNav" aria-label="Primary navigation">
+          <a href="#top">Home</a>
+          <a href="#menu">Menu</a>
+          <a href="#reservations">Reservations</a>
+          <a href="#deliveries">Deliveries</a>
+          <a href="#catering">Catering</a>
+          <a href="#about">About us</a>
+          <a href="#contact">Contact us</a>
+        </nav>
+        <div class="header-actions">
+          <button aria-label="Search" data-message="Search is coming soon">⌕</button>
+          <button aria-label="Shopping bag" data-message="Online ordering is coming soon">▢</button>
+          <button aria-label="Wishlist" data-message="Your wishlist is coming soon">♡</button>
+          <button class="login-button" data-message="Log in is coming soon">Log In</button>
+        </div>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <span class="eyebrow">Welcome to</span>
+          <h1><span class="script-accent">Camus Restau</span><br>and Enjoy <span class="script-accent">The Food</span></h1>
+          <p>Fresh ingredients, generous plates, and little moments worth lingering over. Find your new favorite table in the heart of the neighborhood.</p>
+          <div class="hero-actions">
+            <button class="primary-button" data-message="Reserve a Table">Reserve a Table</button>
+            <button class="secondary-button" data-message="Online Order">Online Order</button>
+          </div>
+          <div class="hours">◷ <span>Open: 11:00am–11:00pm</span></div>
+        </div>
+        <div class="hero-visual" aria-label="Salmon salad plate">
+          <span class="doodle pizza-doodle">◌</span>
+          <span class="garnish tomato tomato-one">◉</span>
+          <span class="garnish tomato tomato-two">◉</span>
+          <span class="garnish onion">◉</span>
+          <div class="plate-ring"><div class="plate-frame"><img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=85" alt="Grilled salmon on a fresh garden salad"></div></div>
+          <span class="leaf-mark">✦</span>
+        </div>
+      </section>
+
+      <section class="reviews-section" id="about">
+        <div class="section-heading-row">
+          <div>
+            <span class="leaf-doodle">❧</span>
+            <h2>What Our Customers <span class="script-accent">Say</span></h2>
+          </div>
+          <div class="carousel-controls">
+            <button class="control dark" id="previousReview" aria-label="Previous reviews">←</button>
+            <button class="control orange" id="nextReview" aria-label="Next reviews">→</button>
+          </div>
+        </div>
+        <div class="review-grid" id="reviewGrid"></div>
+      </section>
+    </div>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>
