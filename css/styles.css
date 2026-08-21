@@ -288,6 +288,8 @@ h1 {
 }
 
 .reviews-section {
+    display: flex;
+    flex-direction: column;
     padding:30px 7% 45px;
     border-top:1px solid #eee2c7;
 }
@@ -311,31 +313,6 @@ h2 {
     font-size:clamp(27px,3vw,38px);
     line-height:1.1;
     letter-spacing:-1px;
-}
-
-.carousel-controls {
-    display:flex;
-    gap:7px;
-}
-
-.control {
-    width:29px;
-    height:29px;
-    border:0;
-    border-radius:50%;
-    color:white;
-}
-
-.control.dark {
-    background:#333;
-}
-
-.control.orange {
-    background:#f2a126;
-}
-
-.control:hover {
-    opacity:.8;
 }
 
 .review-grid {
@@ -458,6 +435,11 @@ h2 {
         margin-left:auto;
     }
     
+
+    .header-actions a {
+        text-decoration: none;
+    }
+
     .header-actions button:not(.login-button) {
         display:none;
     }

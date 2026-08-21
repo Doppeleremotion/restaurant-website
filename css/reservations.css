@@ -1,0 +1,126 @@
+/* Basic student assignment CSS for the reservations form. */
+
+.reservation-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 55px 7% 65px;
+}
+
+
+.header-actions a {
+        text-decoration: none;
+    }
+
+.reservation-intro {
+  margin-bottom: 28px;
+}
+
+.reservation-intro p {
+  margin-top: 12px;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.reservation-form {
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.reservation-form fieldset {
+  margin: 0 0 24px;
+  padding: 0 0 20px;
+  border: 0;
+  border-bottom: 1px solid #eee2c7;
+}
+
+.reservation-form legend {
+  margin-bottom: 16px;
+  color: #bd781c;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label,
+.label-text {
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: #fff;
+  color: #222;
+  font-size: 12px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: 2px solid #f2a126;
+  border-color: #f2a126;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.radio-options {
+  display: flex;
+  gap: 18px;
+  padding-top: 4px;
+  font-size: 12px;
+}
+
+.radio-options label {
+  font-weight: normal;
+}
+
+.radio-options input {
+  margin-right: 5px;
+}
+
+.form-message {
+  margin-top: 14px;
+  color: #bd781c;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .reservation-page {
+    padding: 35px 7% 45px;
+  }
+
+  .reservation-form {
+    padding: 18px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .radio-options {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

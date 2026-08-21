@@ -35,5 +35,5 @@ The website shall have the following webpages:
 3. Reservation
 4. Catering services
 5. Deliveries
-6. About us
-7. Contact us
+
+- "About us" and "Contact us" shall be at the bottom of each page.

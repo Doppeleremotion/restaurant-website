@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservations | Camus</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/reservations.css">
+</head>
+<body>
+  <main class="site-shell">
+    <div class="paper-panel">
+      <header class="site-header">
+        <a href="/index.html" class="brand" aria-label="Foodie home">
+            <span class="brand-mark">F</span><span>Foodie</span></a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="/index.html">Home</a>
+          <a href="/menu.html">Menu</a>
+          <a href="/reservations.html">Reservations</a>
+          <a href="#deliveries">Deliveries</a>
+          <a href="#catering">Catering</a>
+          <a href="#about">About us</a>
+          <a href="#contact">Contact us</a>
+        </nav>
+        <div class="header-actions">
+            <a href="#contact" aria-label="Search">⌕</a>
+            <a href="#menu" aria-label="Shopping bag">▢</a>
+            <a href="#about" aria-label="Wishlist">♡</a>
+            <a class="login-button" href="#contact">Log In</a>
+        </div>
+      </header>
+
+      <section class="reservation-page">
+        <div class="reservation-intro">
+            <span class="eyebrow">Book a table</span>
+            <h1>Make a <span class="script-accent">Reservation</span></h1>
+            <p>Complete the form below and we will prepare a table for your visit.</p>
+        </div>
+        
+        <form class="reservation-form" action="#confirmation" method="get">
+          <fieldset>
+            <legend>Contact information</legend>
+            <div class="form-row"><div class="form-group"><label for="name">Name</label><input type="text" id="name" name="name" required></div><div class="form-group"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone" required></div></div>
+            <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
+          </fieldset>
+          <fieldset>
+            <legend>Reservation details</legend>
+            <div class="form-row"><div class="form-group"><label for="date">Date</label><input type="date" id="date" name="date" required></div><div class="form-group"><label for="time">Time</label><input type="time" id="time" name="time" required></div></div>
+            <div class="form-row"><div class="form-group"><label for="guests">Number of guests</label><input type="number" id="guests" name="guests" min="1" max="20" required></div><div class="form-group"><span class="label-text">Table location</span><div class="radio-options"><label><input type="radio" name="location" value="indoors" required> Indoors</label><label><input type="radio" name="location" value="outdoors"> Outdoors</label></div></div></div>
+          </fieldset>
+          <div class="form-group"><label for="extra-details">Extra details</label><textarea id="extra-details" name="extra-details" rows="5" placeholder="Please tell us about food allergies, dietary restrictions, or accessibility needs."></textarea></div>
+          <button class="primary-button" type="submit">Send Reservation Request</button>
+          <p class="form-message" id="confirmation">After you submit the form, the restaurant can contact you to confirm your reservation.</p>
+        </form>
+      </section>
+    </div>
+    <footer class="site-footer"><span>Foodie Restaurant</span><span>Made with fresh ideas &amp; good company.</span></footer>
+  </main>
+</body>
+</html>
