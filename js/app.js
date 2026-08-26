@@ -178,6 +178,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+    // ===== SERVICE REQUEST FORMS =====
+    const serviceForms = document.querySelectorAll('.service-form');
+    serviceForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const requestType = this.id === 'deliveryForm' ? 'delivery' : 'catering';
+        alert(`Thank you! Your ${requestType} request has been received. Our team will contact you shortly.`);
+        this.reset();
+      });
+    });
+
   // ===== LOGIN PAGE FUNCTIONALITY =====
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
