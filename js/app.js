@@ -102,6 +102,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'index.html';
   });
 
+  document.getElementById('signupForm')?.addEventListener('submit', async event => {
+    event.preventDefault();
+    const client = await window.camusSupabaseReady;
+    const errorElement = document.getElementById('signupError');
+    if (!client) { errorElement.textContent = 'Signup is unavailable. Check the Supabase connection.'; return; }
+    const emailInput = document.getElementById('signupEmail');
+    const passwordInput = document.getElementById('signupPassword');
+    const nameInput = document.getElementById('signupName');
+    const phoneInput = document.getElementById('signupPhone');
+    if (passwordInput.value.length < 6) { errorElement.textContent = 'Password must be at least 6 characters.'; return; }
+    const { data, error } = await client.auth.signUp({ email: emailInput.value.trim(), password: passwordInput.value, options: { data: { full_name: nameInput.value.trim(), phone: phoneInput.value.trim() } } });
+    if (error) { errorElement.textContent = error.message; return; }
+    if (data.user && data.session) await client.from('profiles').upsert({ id: data.user.id, full_name: nameInput.value.trim(), phone: phoneInput.value.trim() });
+    alert('Account created. Check your email if confirmation is enabled.');
+    event.target.reset();
+  });
+
   document.getElementById('reservationForm')?.addEventListener('submit', async event => {
     event.preventDefault();
     const client = await window.camusSupabaseReady;
@@ -111,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const restaurantSelect = document.getElementById('restaurant');
     const { data: restaurant, error: restaurantError } = await client.from('restaurants').select('id').eq('name', restaurantSelect.value).maybeSingle();
     if (restaurantError || !restaurant) return alert('That restaurant is not available yet.');
-    const { error } = await client.from('reservations').insert({ customer_id: auth.user.id, restaurant_id: restaurant.id, reservation_date: date.value, reservation_time: time.value, guests: Number(guests.value), guest_name: firstName.value.trim(), phone: phone.value.trim(), special_request: document.getElementById('notes')?.value.trim() || null });
+    const { error } = await client.from('reservations').insert({ customer_id: auth.user.id, restaurant_id: restaurant.id, reservation_date: document.getElementById('date').value, reservation_time: document.getElementById('time').value, guests: Number(document.getElementById('guests').value), customer_name: document.getElementById('firstName').value.trim(), customer_phone: document.getElementById('phone').value.trim(), note: document.getElementById('notes')?.value.trim() || null });
     if (error) return alert(`Reservation failed: ${error.message}`);
     alert('Reservation request sent. The restaurant will confirm shortly.'); event.target.reset();
   });
@@ -124,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!auth.user) { alert('Please create a CAMUS account or log in first.'); window.location.href = 'login.html'; return; }
     const name = document.getElementById('restaurantName').value.trim();
     const slug = `${name}-${Date.now()}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const { error } = await client.from('restaurants').insert({ owner_id: auth.user.id, name, slug, description: document.getElementById('description').value.trim(), cuisine: document.getElementById('cuisine').value.trim(), phone: document.getElementById('ownerPhone').value.trim(), email: document.getElementById('ownerEmail').value.trim() });
+    const { error } = await client.from('restaurants').insert({ owner_id: auth.user.id, name, slug, description: document.getElementById('description').value.trim(), cuisine_type: document.getElementById('cuisine').value.trim(), phone: document.getElementById('ownerPhone').value.trim(), email: document.getElementById('ownerEmail').value.trim() });
     if (error) return alert(`Application failed: ${error.message}`);
     alert('Application received. Your restaurant is pending verification.'); event.target.reset();
   });
@@ -132,8 +149,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Public discovery reads approved restaurants from Supabase; demo cards remain as a visual fallback.
   window.camusSupabaseReady.then(async client => {
     if (!client || !document.getElementById('restaurantGrid')) return;
-    const { data, error } = await client.from('restaurants').select('id,name,description,cuisine,logo_url,cover_url,restaurant_locations(city_id,neighborhood,address)').eq('status', 'approved').order('created_at', { ascending: false });
+    const { data, error } = await client.from('restaurants').select('id,name,description,cuisine_type,logo_url,cover_image_url,price_range,rating,review_count,restaurant_locations(city,neighborhood,address,latitude,longitude)').eq('status', 'approved').order('created_at', { ascending: false });
     if (error) { console.warn('Restaurant discovery query failed:', error.message); return; }
-    if (data?.length) window.camusRestaurants = data;
+    if (data?.length) {
+      window.camusRestaurants = data;
+      const grid = document.getElementById('restaurantGrid');
+      grid.innerHTML = data.map(restaurant => {
+        const location = Array.isArray(restaurant.restaurant_locations) ? (restaurant.restaurant_locations[0] || {}) : (restaurant.restaurant_locations || {});
+        const image = restaurant.cover_image_url || restaurant.logo_url || 'sample-pics/bg2.webp';
+        const search = `${restaurant.name} ${restaurant.cuisine_type || ''} ${location.city || ''} ${location.neighborhood || ''}`.toLowerCase();
+        return `<article class="restaurant-card" data-city="${location.neighborhood || location.city || ''}" data-search="${search}"><div class="restaurant-photo"><img src="${image}" alt="${restaurant.name}"><button class="favorite-button" aria-label="Favorite restaurant">♡</button></div><div class="restaurant-body"><div class="title-line"><h3>${restaurant.name}</h3><strong>★ ${restaurant.rating || 'New'}</strong></div><p>${restaurant.cuisine_type || 'Local cuisine'} · ${restaurant.price_range || 'Various prices'}</p><small><i class="fa-solid fa-location-dot"></i> ${location.neighborhood || location.city || 'Cameroon'}</small><div class="card-foot"><span class="open"><i></i> Open now</span><a href="restaurant.html?id=${restaurant.id}">View restaurant</a></div></div></article>`;
+      }).join('');
+      grid.querySelectorAll('.favorite-button').forEach(button => button.addEventListener('click', () => { button.classList.toggle('is-saved'); button.textContent = button.classList.contains('is-saved') ? '♥' : '♡'; }));
+    }
   });
 });
