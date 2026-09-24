@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.city-pill').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('.city-pill').forEach(item => item.classList.remove('active')); button.classList.add('active');
   }));
+  document.querySelectorAll('#restaurantGrid .card-foot a').forEach(link => { link.href = 'restaurant-profile.html'; });
 
   document.getElementById('useLocation')?.addEventListener('click', () => {
     if (!navigator.geolocation) return alert('Location services are unavailable in this browser.');
@@ -144,6 +145,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const { error } = await client.from('restaurants').insert({ owner_id: auth.user.id, name, slug, description: document.getElementById('description').value.trim(), cuisine_type: document.getElementById('cuisine').value.trim(), phone: document.getElementById('ownerPhone').value.trim(), email: document.getElementById('ownerEmail').value.trim() });
     if (error) return alert(`Application failed: ${error.message}`);
     alert('Application received. Your restaurant is pending verification.'); event.target.reset();
+  });
+
+  const profilePage = document.getElementById('storefrontMenu');
+  if (profilePage) {
+    const params = new URLSearchParams(window.location.search);
+    const restaurantId = params.get('id');
+    const restaurantSlug = params.get('slug');
+    const client = await window.camusSupabaseReady;
+    if (!client || (!restaurantId && !restaurantSlug)) {
+      profilePage.innerHTML = '<p class="empty-state">Choose a restaurant from Discover to view its storefront.</p>';
+    } else {
+      const query = client.from('restaurants').select('*,restaurant_locations(city,neighborhood,address),dishes(id,name,description,price,image_url,is_available,is_featured)').eq(restaurantId ? 'id' : 'slug', restaurantId || restaurantSlug).eq('status', 'approved').maybeSingle();
+      const { data: restaurant, error } = await query;
+      if (error || !restaurant) { profilePage.innerHTML = '<p class="error-state">This restaurant is not available or has not been verified yet.</p>'; }
+      else {
+        const location = Array.isArray(restaurant.restaurant_locations) ? restaurant.restaurant_locations[0] : restaurant.restaurant_locations;
+        document.title = `${restaurant.name} | CAMUS`;
+        document.getElementById('restaurantName').textContent = restaurant.name;
+        document.getElementById('restaurantMeta').textContent = `${restaurant.cuisine_type || 'Local cuisine'} · ${location?.neighborhood || location?.city || 'Cameroon'} · ★ ${restaurant.rating || 'New'}`;
+        document.getElementById('restaurantDescription').textContent = restaurant.description || 'A local kitchen serving food worth coming back for.';
+        document.getElementById('restaurantAddress').textContent = location?.address || location?.neighborhood || location?.city || 'Cameroon';
+        document.getElementById('restaurantPhone').textContent = restaurant.phone || 'Contact restaurant';
+        document.getElementById('restaurantInitial').textContent = restaurant.name.charAt(0).toUpperCase();
+        if (restaurant.cover_image_url) document.getElementById('storefrontCover').style.backgroundImage = `url("${restaurant.cover_image_url}")`;
+        document.getElementById('restaurantRating').textContent = restaurant.rating || 'New';
+        document.getElementById('restaurantReviews').textContent = `${restaurant.review_count || 0} reviews`;
+        const dishes = restaurant.dishes || [];
+        profilePage.innerHTML = dishes.length ? dishes.map(dish => `<article class="storefront-dish"><img src="${dish.image_url || 'sample-pics/bg2.webp'}" alt="${dish.name}"><div><h3>${dish.name}</h3><p>${dish.description || 'Prepared fresh by the kitchen.'}</p><strong>${Number(dish.price).toLocaleString()} FCFA</strong></div><button class="submit-button" data-add-dish data-name="${dish.name}" data-price="${dish.price}" ${dish.is_available ? '' : 'disabled'}>${dish.is_available ? 'Add' : 'Unavailable'}</button></article>`).join('') : '<p class="empty-state">This restaurant has not published its menu yet.</p>';
+        profilePage.querySelectorAll('[data-add-dish]').forEach(button => button.addEventListener('click', () => {
+          const cart = JSON.parse(localStorage.getItem('camusCart') || '[]'); const item = cart.find(entry => entry.name === button.dataset.name);
+          if (item) item.quantity += 1; else cart.push({ name: button.dataset.name, price: Number(button.dataset.price), quantity: 1 });
+          localStorage.setItem('camusCart', JSON.stringify(cart)); updateCartCount(); alert(`${button.dataset.name} added to your bag.`);
+        }));
+      }
+    }
+  }
+
+  document.getElementById('checkoutItems') && renderCheckout();
+  document.getElementById('logoutButton')?.addEventListener('click', async () => { const client = await window.camusSupabaseReady; if (client) await client.auth.signOut(); window.location.href = 'index.html'; });
+
+  async function renderCheckout() {
+    const cart = JSON.parse(localStorage.getItem('camusCart') || '[]');
+    const itemsElement = document.getElementById('checkoutItems');
+    const totalElement = document.getElementById('checkoutTotal');
+    itemsElement.innerHTML = cart.length ? cart.map(item => `<p>${item.name} <span>${item.quantity} × ${Number(item.price).toLocaleString()} FCFA</span></p>`).join('') : '<p class="empty-state">Your bag is empty. Add dishes before checkout.</p>';
+    totalElement.textContent = `${cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0).toLocaleString()} FCFA`;
+  }
+
+  document.getElementById('checkoutForm')?.addEventListener('submit', async event => {
+    event.preventDefault();
+    const message = document.getElementById('checkoutMessage');
+    const cart = JSON.parse(localStorage.getItem('camusCart') || '[]');
+    if (!cart.length) { message.textContent = 'Your bag is empty.'; return; }
+    const client = await window.camusSupabaseReady;
+    if (!client) { message.textContent = 'Checkout is unavailable. Check your Supabase connection.'; return; }
+    const { data: auth } = await client.auth.getUser();
+    if (!auth.user) { message.textContent = 'Please log in before placing an order.'; window.location.href = 'login.html'; return; }
+    const subtotal = cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+    const { data: order, error } = await client.from('orders').insert({ customer_id: auth.user.id, restaurant_id: cart[0].restaurantId, order_number: `CAM-${Date.now()}`, order_type: document.querySelector('input[name="orderType"]:checked').value, subtotal, delivery_fee: 0, total: subtotal, delivery_address: document.getElementById('deliveryAddress').value.trim(), delivery_city: document.getElementById('deliveryCity').value.trim(), delivery_neighborhood: document.getElementById('deliveryNeighborhood').value.trim(), customer_name: document.getElementById('customerName').value.trim(), customer_phone: document.getElementById('customerPhone').value.trim(), customer_note: document.getElementById('customerNote').value.trim() }).select().single();
+    if (error) { message.textContent = `Order failed: ${error.message}`; return; }
+    const { error: itemsError } = await client.from('order_items').insert(cart.map(item => ({ order_id: order.id, dish_id: item.dishId || null, dish_name: item.name, unit_price: item.price, quantity: item.quantity, total_price: Number(item.price) * item.quantity })));
+    if (itemsError) { message.textContent = `Order items failed: ${itemsError.message}`; return; }
+    localStorage.removeItem('camusCart'); window.location.href = `order-confirmation.html?id=${order.id}`;
   });
 
   // Public discovery reads approved restaurants from Supabase; demo cards remain as a visual fallback.
